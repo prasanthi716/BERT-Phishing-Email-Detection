@@ -1,0 +1,14 @@
+﻿.venv/
+venv/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
+backup_before_grouped_eval/
+**/app_before_grouped_model.py
+models/

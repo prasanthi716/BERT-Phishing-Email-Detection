@@ -1,0 +1,2 @@
+model,training_examples,test_examples,epochs,batch_size,accuracy,precision_phishing,recall_phishing,f1_phishing
+google-bert/bert-base-uncased,1600,400,1,4,0.9625,0.9530201342281879,0.9466666666666667,0.9498327759197325
