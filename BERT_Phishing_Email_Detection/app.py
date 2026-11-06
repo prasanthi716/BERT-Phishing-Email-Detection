@@ -8,16 +8,14 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 
 CURRENT_DIR = Path(__file__).resolve().parent
-PARENT_DIR = CURRENT_DIR.parent
-
-if (PARENT_DIR / "models" / "bert_phishing_grouped").exists():
-    PROJECT_ROOT = PARENT_DIR
-else:
-    PROJECT_ROOT = CURRENT_DIR
+PROJECT_ROOT = CURRENT_DIR.parent
 
 MODEL_DIR = PROJECT_ROOT / "models" / "bert_phishing_grouped"
+MODEL_REPO = "Prasanthi77/bert-phishing-grouped"
+
 REPORTS_DIR = PROJECT_ROOT / "reports"
 GROUPED_REPORTS_DIR = REPORTS_DIR / "grouped_eval"
+
 
 st.set_page_config(
     page_title="BERT Phishing Email Detector",
@@ -25,6 +23,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
 
 st.markdown(
     """
@@ -93,15 +92,12 @@ st.markdown(
 
 @st.cache_resource
 def load_model():
-    if not MODEL_DIR.exists():
-        raise FileNotFoundError(
-            f"Trained grouped model not found at: {MODEL_DIR}"
-        )
+    model_source = str(MODEL_DIR) if MODEL_DIR.exists() else MODEL_REPO
 
-    tokenizer = AutoTokenizer.from_pretrained(str(MODEL_DIR))
+    tokenizer = AutoTokenizer.from_pretrained(model_source)
 
     model = AutoModelForSequenceClassification.from_pretrained(
-        str(MODEL_DIR)
+        model_source
     )
 
     model.eval()
@@ -246,7 +242,7 @@ if page == "Email Analyzer":
                 except Exception as error:
                     st.error(
                         "Analysis failed. Check that the trained model "
-                        f"files are available. Details: {error}"
+                        f"is accessible. Details: {error}"
                     )
 
         result = st.session_state.get("last_prediction")
